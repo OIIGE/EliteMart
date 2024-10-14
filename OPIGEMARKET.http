@@ -1,0 +1,6 @@
+@OPIGEMARKET_HostAddress = http://localhost:5008
+
+GET {{OPIGEMARKET_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
