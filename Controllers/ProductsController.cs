@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using OPIGEMARKET.Data;
-using OPIGEMARKET.Model;
+using EliteMart.Data;
+using EliteMart.Model;
 using System;
 
-namespace OPIGEMARKET.Controllers
+namespace EliteMart.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -39,6 +39,7 @@ namespace OPIGEMARKET.Controllers
         return product;
     }
 
+    
     // POST: api/Products
     [HttpPost]
     public async Task<ActionResult<Product>> PostProduct(Product product)

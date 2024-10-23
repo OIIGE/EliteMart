@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using OPIGEMARKET.Model;
+using EliteMart.Model;
 using System;
 using System.Collections.Generic;
 
-namespace OPIGEMARKET.Data
+namespace EliteMart.Data
 {
     public class AppDbContext : DbContext
     {

@@ -1,12 +1,10 @@
 ﻿using EliteMart.Validation;
 using System.ComponentModel.DataAnnotations;
 
-namespace EliteMart.Model
+namespace EliteMart.DTOS.Customer
 {
-    public class Customer
+    public class CreateCustomerDto
     {
-        
-        public int Id { get; set; }
         [Required]
         [StringLength(100)]
         public string FirstName { get; set; }

@@ -1,9 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace EliteMart.Model
+namespace EliteMart.DTOS.Product
 {
-    public class Product
+    public class ProductDto
     {
         public int Id { get; set; }
 
@@ -31,7 +30,6 @@ namespace EliteMart.Model
         public string ImageUrl { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

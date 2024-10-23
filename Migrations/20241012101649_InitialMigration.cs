@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace OPIGEMARKET.Migrations
+namespace EliteMart.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration

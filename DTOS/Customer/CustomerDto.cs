@@ -1,11 +1,11 @@
 ﻿using EliteMart.Validation;
 using System.ComponentModel.DataAnnotations;
 
-namespace EliteMart.Model
+namespace EliteMart.DTOS.Customer
 {
-    public class Customer
+    public class CustomerDto
     {
-        
+
         public int Id { get; set; }
         [Required]
         [StringLength(100)]
@@ -38,5 +38,8 @@ namespace EliteMart.Model
         [DataType(DataType.Password)]
         [PasswordValidation]
         public string Password { get; set; }
+
+
     }
 }
+

@@ -1,20 +1,25 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using OPIGEMARKET.Data;
-using OPIGEMARKET.Model;
+using EliteMart.Data;
+using EliteMart.DTOS.Customer;
+using EliteMart.Interfaces;
+using EliteMart.Mappers;
+using EliteMart.Model;
 using System;
 
-namespace OPIGEMARKET.Controllers
+namespace EliteMart.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class CustomersController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly ICustomerRepository _customerRepo;
 
-        public CustomersController(AppDbContext context)
+        public CustomersController(AppDbContext context, ICustomerRepository customerRepo)
         {
+            _customerRepo = customerRepo;
             _context = context;
         }
 
@@ -23,75 +28,76 @@ namespace OPIGEMARKET.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
         {
-            return await _context.Customers.ToListAsync();
+            var customers = await _customerRepo.GetAllAsync();
+
+            var CustomerDto = customers.Select(s => s.ToCustomerDto());
+            return Ok(customers);
         }
 
         // GET: api/Customers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Customer>> GetCustomer(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
+            var customerModel = await _customerRepo.GetByIdAsync(id); ;
 
-            if (customer == null)
+            if (customerModel == null)
             {
                 return NotFound();
             }
 
-            return customer;
+            return Ok(customerModel.ToCustomerDto());
         }
 
-        // POST: api/Customers
+        // POST: api/Customers CREATE
         [HttpPost]
-        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
+        public async Task <IActionResult> Create([FromBody] CreateCustomerDto customerDto)
         {
-            _context.Customers.Add(customer);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var customerModel = customerDto.ToCustomerFromCustomerDto(); 
+           await _customerRepo.CreateAsync(customerModel);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetCustomer), new { id = customer.Id }, customer);
+            return CreatedAtAction(nameof(GetCustomer), new { id = customerModel.Id }, customerModel.ToCustomerDto());
         }
 
-        // PUT: api/Customers/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer(int id, Customer customer)
+
+        // PUT: api/Customers/5 EDIT
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCustomerDto updatedDto)
         {
-            if (id != customer.Id)
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
-            _context.Entry(customer).State = EntityState.Modified;
-
-            try
+            var customerModel = await _customerRepo.UpdateAsync(id, updatedDto);
+           
+            if (customerModel == null)
             {
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CustomerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+                       
+            return Ok(customerModel.ToCustomerDto());
         }
 
-        // DELETE: api/Customers/5
-        [HttpDelete("{id}")]
+
+        // DELETE: api/Customers/5   DELETE
+        [HttpDelete]
+        [Route("{id}")]
         public async Task<IActionResult> DeleteCustomer(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer == null)
+            var customerModel = await _customerRepo.DeleteAsync(id);
+            if (customerModel == null)
             {
                 return NotFound();
             }
 
-            _context.Customers.Remove(customer);
-            await _context.SaveChangesAsync();
+            
 
             return NoContent();
         }

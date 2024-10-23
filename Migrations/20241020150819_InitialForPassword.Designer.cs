@@ -11,15 +11,15 @@ using EliteMart.Data;
 namespace EliteMart.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241012101649_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20241020150819_InitialForPassword")]
+    partial class InitialForPassword
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -43,6 +43,9 @@ namespace EliteMart.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Password")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
