@@ -7,6 +7,7 @@ using EliteMart.Interfaces;
 using EliteMart.Mappers;
 using EliteMart.Model;
 using System;
+using EliteMart.Helpers;
 
 namespace EliteMart.Controllers
 {
@@ -26,9 +27,12 @@ namespace EliteMart.Controllers
         //to return all the list of record in the database
         // GET: api/Customers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
-            var customers = await _customerRepo.GetAllAsync();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var customers = await _customerRepo.GetAllAsync(query);
 
             var CustomerDto = customers.Select(s => s.ToCustomerDto());
             return Ok(customers);

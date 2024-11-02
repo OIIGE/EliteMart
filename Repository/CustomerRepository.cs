@@ -6,6 +6,7 @@ using EliteMart.Data;
 using EliteMart.DTOS.Customer;
 using EliteMart.Interfaces;
 using EliteMart.Model;
+using EliteMart.Helpers;
 
 namespace EliteMart.Repository
 {
@@ -38,9 +39,25 @@ namespace EliteMart.Repository
             return customerModel;
         }
 
-        public async Task<List<Customer>> GetAllAsync()
+        public async Task<List<Customer>> GetAllAsync(QueryObject query)
         {
-         return await _context.Customers.ToListAsync();
+         var customers = _context.Customers.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.FirstName))
+            {
+                customers = customers.Where(s => s.FirstName.Contains(query.FirstName));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                if(query.SortBy.Equals("FirstName", StringComparison.OrdinalIgnoreCase))
+                {
+                    customers = query.IsDecending? customers.OrderByDescending(s => s.FirstName): customers.OrderBy(s => s.FirstName);
+                }
+            }
+
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+            return await customers.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
         public async Task<Customer> GetByIdAsync(int id)

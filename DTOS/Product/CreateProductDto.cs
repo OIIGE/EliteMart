@@ -12,10 +12,10 @@ namespace EliteMart.DTOS.Product
         [StringLength(500)]
         public string Description { get; set; }
 
-        [Range(0.01, 10000.00)]
+        [Range(0.01, 10000000.00)]
         public decimal Price { get; set; }
 
-        [Range(1, 10000)]
+        [Range(1, 1000)]
         public int Unit { get; set; }
 
         [Required]

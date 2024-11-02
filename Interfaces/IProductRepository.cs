@@ -1,17 +1,18 @@
 ﻿using EliteMart.DTOS.Customer;
 using EliteMart.DTOS.Product;
+using EliteMart.Helpers;
 using EliteMart.Model;
 
 namespace EliteMart.Interfaces
 {
     public interface IProductRepository
     {
-        Task<List<Customer>> GetAllAsync();
-        Task<Customer> GetByIdAsync(int id);
-        Task<Customer> GetByNameAsync(Product productModel);
+        Task<List<Product>> GetAllAsync(QueryObject query);
+        Task<Product> GetByIdAsync(int id);
+        Task<Product> GetByNameAsync(Product productModel);
 
-        Task<Customer?> UpdateAsync(int id, UpdateProductDto productDto);
-        Task<Customer?> DeleteAsync(int id);
-        Task<Customer> CreateAsync(Product productModel);
+        Task<Product?> UpdateAsync(int id, UpdateProductDto productDto);
+        Task<Product?> DeleteAsync(int id);
+        Task<Product> CreateAsync(Product productModel);
     }
 }
