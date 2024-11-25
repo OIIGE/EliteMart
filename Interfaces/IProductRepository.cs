@@ -7,12 +7,13 @@ namespace EliteMart.Interfaces
 {
     public interface IProductRepository
     {
-        Task<List<Product>> GetAllAsync(QueryObject query);
+        Task<List<Product>> GetAllAsync(ProductQueryObject productquery);
         Task<Product> GetByIdAsync(int id);
         Task<Product> GetByNameAsync(Product productModel);
 
         Task<Product?> UpdateAsync(int id, UpdateProductDto productDto);
         Task<Product?> DeleteAsync(int id);
         Task<Product> CreateAsync(Product productModel);
+        
     }
 }

@@ -26,12 +26,12 @@ namespace EliteMart.Controllers
         //to return all the list of record in the database
         // GET: api/Products
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
+        public async Task<IActionResult> GetAll([FromQuery] ProductQueryObject productquery)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var products = await _productRepo.GetAllAsync(query);
+            var products = await _productRepo.GetAllAsync(productquery);
 
             var ProductDto = products.Select(s => s.ToProductDto());
             return Ok(products);

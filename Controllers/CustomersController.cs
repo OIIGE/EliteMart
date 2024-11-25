@@ -26,7 +26,7 @@ namespace EliteMart.Controllers
 
         //to return all the list of record in the database
         // GET: api/Customers
-        [HttpGet]
+        [HttpGet("GetAllCustomer")]
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
             if (!ModelState.IsValid)
@@ -39,7 +39,7 @@ namespace EliteMart.Controllers
         }
 
         // GET: api/Customers/5
-        [HttpGet("{id}")]
+        [HttpGet("GetCustomerById")]
         public async Task<ActionResult<Customer>> GetCustomer(int id)
         {
             var customerModel = await _customerRepo.GetByIdAsync(id); ;
@@ -53,7 +53,7 @@ namespace EliteMart.Controllers
         }
 
         // POST: api/Customers CREATE
-        [HttpPost]
+        [HttpPost ("CreateCustomer")]
         public async Task <IActionResult> Create([FromBody] CreateCustomerDto customerDto)
         {
             if (!ModelState.IsValid)
@@ -70,8 +70,8 @@ namespace EliteMart.Controllers
 
 
         // PUT: api/Customers/5 EDIT
-        [HttpPut]
-        [Route("{id}")]
+        [HttpPut ("EditCustomer")]
+        //[Route("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCustomerDto updatedDto)
         {
             if (!ModelState.IsValid)
@@ -91,8 +91,9 @@ namespace EliteMart.Controllers
 
 
         // DELETE: api/Customers/5   DELETE
-        [HttpDelete]
-        [Route("{id}")]
+        //[HttpGet("DeleteCustomer")]
+        [HttpDelete("DeleteCustomer")]
+        //[Route("{id}")]
         public async Task<IActionResult> DeleteCustomer(int id)
         {
             var customerModel = await _customerRepo.DeleteAsync(id);

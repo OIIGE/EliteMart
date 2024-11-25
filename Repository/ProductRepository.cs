@@ -36,29 +36,29 @@ namespace EliteMart.Repository
             return productModel;
         }
 
-        public async Task<List<Product>> GetAllAsync(QueryObject query)
+        public async Task<List<Product>> GetAllAsync(ProductQueryObject productquery)
         {
             var products = _context.Products.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(query.ProductName))
+            if (!string.IsNullOrWhiteSpace(productquery.ProductName))
             {
-                products = products.Where(s => s.ProductName.Contains(query.ProductName));
+                products = products.Where(s => s.ProductName.Contains(productquery.ProductName));
             }
 
-            if (!string.IsNullOrWhiteSpace(query.Category))
+            if (!string.IsNullOrWhiteSpace(productquery.Category))
             {
-                products = products.Where(s => s.Category.Contains(query.Category));
+                products = products.Where(s => s.Category.Contains(productquery.Category));
             }
-            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            if (!string.IsNullOrWhiteSpace(productquery.SortBy))
             {
-                if (query.SortBy.Equals("ProductName", StringComparison.OrdinalIgnoreCase))
+                if (productquery.SortBy.Equals("ProductName", StringComparison.OrdinalIgnoreCase))
                 {
-                    products = query.IsDecending ? products.OrderByDescending(s => s.ProductName) : products.OrderBy(s => s.ProductName);
+                    products = productquery.IsDecending ? products.OrderByDescending(s => s.ProductName) : products.OrderBy(s => s.ProductName);
                 }
             }
 
-            var skipNumber = (query.PageNumber - 1) * query.PageSize;
-            return await products.Skip(skipNumber).Take(query.PageSize).ToListAsync();
+            var skipNumber = (productquery.PageNumber - 1) * productquery.PageSize;
+            return await products.Skip(skipNumber).Take(productquery.PageSize).ToListAsync();
         }
 
         public async Task<Product> GetByIdAsync(int id)
